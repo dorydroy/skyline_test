@@ -86,13 +86,14 @@ export function WebMap() {
   };
  
   useEffect(_=>{
-    //Receiving image dimension dynamically
+    //Receiving image dimensions dynamically
     let url = 'static/globe.png';
     let imageSrc = url;
     let image = new Image();
     image.src = imageSrc;
     mapWidth=image.width;
     mapHeight=image.height;
+    //Updating the init location on the map
     setTimeout(()=>{
       let initCoords=viewer.cesiumElement.scene.camera.position;
       handleConversion(initCoords)
