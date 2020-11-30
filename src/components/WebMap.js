@@ -1,5 +1,5 @@
-import React, { useEffect, useRef,useState } from "react";
-import {Cartesian3, Math as CesiumMath} from 'cesium';
+import React, { useEffect,useState } from "react";
+import {Cartesian3} from 'cesium';
 import { Viewer, Camera } from "cesium-react";
 
 //Initialize global variables
@@ -39,23 +39,23 @@ export function WebMap() {
   
   //A conversion method from pixel xy to lon lat
   const pixel2LatLon =(x, y)=> {
-    let res;
-    const FE = 180;
-    const radius = mapWidth / (2 * Math.PI);
-    const x_radius= (x/radius)-0.1;
-    const y_equator= (mapHeight / 2) - y;
+    let radDeg;
+    let FE = 180;
+    let radius = mapWidth / (2 * Math.PI);
+    let x_radius= (x/radius)-0.1;
+    let y_equator= (mapHeight / 2) - y;
     let power=Math.pow(10,(y_equator/radius));
     let rad=Math.atan(power);
     if (rad>1){
-      res=(rad-(Math.PI/4))*(rad-0.1);
+      radDeg=(rad-(Math.PI/4))*(rad-0.1);
     }
     else{
       console.log((1-rad)*2);
-      res=(rad-(Math.PI/4))*(((1-rad)*2)-0.1);
+      radDeg=(rad-(Math.PI/4))*(((1-rad)*2)-0.1);
     }
-    const lat = radiansToDegrees(res);
-    const lonDeg = radiansToDegrees(x_radius);
-    const lon = lonDeg-FE;
+    let lat = radiansToDegrees(radDeg);
+    let lonDeg = radiansToDegrees(x_radius);
+    let lon = lonDeg-FE;
     return {
       'lon' : lon,
       'lat' : lat
@@ -63,12 +63,12 @@ export function WebMap() {
   }
   //A conversion method from lon lat to pixel xy
   const latLonToTopLeft =(lat, lon)=> {
-    const FE = 180;
-    const radius = mapWidth / (2 * Math.PI);
-    const latRad = degreesToRadians(lat);
-    const lonRad = degreesToRadians(lon + FE);
-    const x = lonRad * radius;
-    const yFromEquator = radius * Math.log(Math.tan(Math.PI / 4 + latRad / 2));
+    let FE = 180;
+    let radius = mapWidth / (2 * Math.PI);
+    let latRad = degreesToRadians(lat);
+    let lonRad = degreesToRadians(lon + FE);
+    let x = lonRad * radius;
+    let yFromEquator = radius * Math.log(Math.tan(Math.PI / 4 + latRad / 2));
     let y = mapHeight / 2 - yFromEquator;
     if (y>=mapHeight-10){
       y=mapHeight-10;
